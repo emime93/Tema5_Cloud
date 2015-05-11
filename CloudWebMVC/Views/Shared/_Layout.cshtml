@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@model CloudWebMVC.Models.User
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -26,7 +28,7 @@
                             Dropdown <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu" role="menu">
-                            <li><a href="#">Hello, Emi</a></li>
+                            <li><a href="#">Hello, @Html.DisplayTextFor(model => model.Username)</a></li>
                             <li><a href="#">Sign out</a></li>
                         </ul>
                     </li>

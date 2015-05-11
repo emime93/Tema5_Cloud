@@ -13,11 +13,11 @@ namespace CloudWebMVC.Controllers
             return View();
         }
 
-        public ActionResult About()
+        public ActionResult Dashboard(Models.User user)
         {
             ViewBag.Message = "Your application description page.";
 
-            return View();
+            return View(user);
         }
 
         public ActionResult Contact()
@@ -27,12 +27,17 @@ namespace CloudWebMVC.Controllers
             return View();
         }
 
-        public ActionResult Login()
+        [HttpGet]
+        public ActionResult SignUp()
         {
             ViewBag.Message = "Login page";
             return View();
         }
-            
 
+        [HttpPost]
+        public ActionResult SignUp(string username, string password)
+        {
+            return View("Index");
+        }
     }
 }

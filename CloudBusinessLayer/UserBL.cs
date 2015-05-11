@@ -7,11 +7,11 @@ using CloudModel;
 
 namespace CloudBusinessLayer
 {
-    class UserBL
+    public class UserBL
     {
         public bool SignUp(User user)
         {
-            using (var context = new LeModelContainer())
+            using (var context = new CloudModel.LeModelContainer())
             {
                 if (!user.Username.Trim().Equals("") ||
                     !user.Password.Trim().Equals(""))
@@ -27,11 +27,11 @@ namespace CloudBusinessLayer
 
         public bool SignIn(User user)
         {
-            using (var context = new LeModelContainer())
+            using (var context = new CloudModel.LeModelContainer())
             {
                 if (!user.Username.Trim().Equals("") ||
                    !user.Password.Trim().Equals(""))
-                {
+                {                  
                     foreach (var user1 in context.Users)
                     {
                         if (user1.Username.Equals(user.Username) &&
@@ -48,7 +48,7 @@ namespace CloudBusinessLayer
 
         public bool SignOut(User user)
         {
-            using (var context = new LeModelContainer())
+            using (var context = new CloudModel.LeModelContainer())
             {
                 if (!user.Username.Trim().Equals("") ||
                    !user.Password.Trim().Equals(""))

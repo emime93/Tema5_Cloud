@@ -18,6 +18,12 @@ namespace CloudWebMVC
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
+
+            routes.MapRoute(
+                name: "Controller",
+                url: "{controller}/{action}",
+                defaults: new { controller = "SignUpController", action = "SignUp"}
+            );
         }
     }
 }
