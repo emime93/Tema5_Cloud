@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudWebMVC", "CloudWebMVC\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudModel", "CloudModel\CloudModel.csproj", "{35A9D0FF-3C95-45BF-9163-A50AE0F56A66}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudBusinessLayer", "CloudBusinessLayer\CloudBusinessLayer.csproj", "{872EABB7-F853-4020-ABAD-6DDB78F63DBD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{35A9D0FF-3C95-45BF-9163-A50AE0F56A66}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{35A9D0FF-3C95-45BF-9163-A50AE0F56A66}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{35A9D0FF-3C95-45BF-9163-A50AE0F56A66}.Release|Any CPU.Build.0 = Release|Any CPU
+		{872EABB7-F853-4020-ABAD-6DDB78F63DBD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{872EABB7-F853-4020-ABAD-6DDB78F63DBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{872EABB7-F853-4020-ABAD-6DDB78F63DBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{872EABB7-F853-4020-ABAD-6DDB78F63DBD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
