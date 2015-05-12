@@ -16,6 +16,11 @@ namespace CloudBusinessLayer
                 if (!user.Username.Trim().Equals("") ||
                     !user.Password.Trim().Equals(""))
                 {
+                    foreach (var user1 in context.Users)
+                    {
+                        if (user1.Username.Equals(user.Username))
+                            return false;
+                    }
                     user.Status = true;
                     context.Users.Add(user);
                     context.SaveChanges();
@@ -50,13 +55,11 @@ namespace CloudBusinessLayer
         {
             using (var context = new CloudModel.LeModelContainer())
             {
-                if (!user.Username.Trim().Equals("") ||
-                   !user.Password.Trim().Equals(""))
+                if (!user.Username.Trim().Equals(""))
                 {
                     foreach (var user1 in context.Users)
                     {
-                        if (user1.Username.Equals(user.Username) &&
-                            user1.Password.Equals(user.Password))
+                        if (user1.Username.Equals(user.Username))
                         {
                             user1.Status = false;
                             return true;

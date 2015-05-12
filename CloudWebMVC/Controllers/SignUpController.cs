@@ -16,18 +16,20 @@ namespace CloudWebMVC.Controllers
                 return RedirectToAction("../Home/SignUp");
             else
             {
-                using (var context = new CloudModel.LeModelContainer())
+                var user = new CloudModel.User { Username = username, Password = password };
+                if (Models.Profile.userBL.SignUp(user))
                 {
-                    foreach (var user1 in context.Users)
-                    {
-                        if (user1.Username.Equals(username))
-                            return RedirectToAction("../Home/SignUp");
-                    }
-
-                    var user = new CloudModel.User { Username = username, Password = password };
-                    context.Users.Add(user);
+                    Models.User user1 = new Models.User();
+                    user1.Username = username;                 
+                    return RedirectToAction("../Home/Dashboard", user1);
                 }
-                return RedirectToAction("../Home/Index");
+                else
+                {
+                    Models.User user1 = new Models.User();
+                    user1.Username = username;
+                    user1.ErrorMessage = "There is already a user with the username " + user1.Username;
+                    return RedirectToAction("../Home/SignUp", user1);
+                }               
             }
         }
 
@@ -46,6 +48,16 @@ namespace CloudWebMVC.Controllers
             }
 
             return RedirectToAction("../Home/Index");
+        }
+
+        [HttpPost]
+        public ActionResult SignOut(Models.User user)
+        {
+            CloudModel.User user1 = new CloudModel.User();
+            user1.Username = user.Username;
+            if (Models.Profile.userBL.SignOut(user1))
+                return RedirectToAction("../Home/Index");
+            else return RedirectToAction("../Home/Dashboard");
         }
     }
 }

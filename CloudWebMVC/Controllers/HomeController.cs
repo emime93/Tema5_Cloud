@@ -15,6 +15,8 @@ namespace CloudWebMVC.Controllers
 
         public ActionResult Dashboard(Models.User user)
         {
+            if (user.Username == null)
+                return RedirectToAction("../Home/Index");
             ViewBag.Message = "Your application description page.";
 
             return View(user);
@@ -28,10 +30,10 @@ namespace CloudWebMVC.Controllers
         }
 
         [HttpGet]
-        public ActionResult SignUp()
+        public ActionResult SignUp(Models.User user)
         {
             ViewBag.Message = "Login page";
-            return View();
+            return View(user);
         }
 
         [HttpPost]
