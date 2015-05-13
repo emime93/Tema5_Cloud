@@ -16,12 +16,13 @@ namespace CloudWebMVC.Controllers
                 return RedirectToAction("../Home/SignUp");
             else
             {
-                var user = new CloudModel.User { Username = username, Password = password };
+                var user = new CloudModel.User { Username = username, Password = password, Status = true};
                 if (Models.Profile.userBL.SignUp(user))
                 {
+                    Session["leUser"] = user;
                     Models.User user1 = new Models.User();
                     user1.Username = username;                 
-                    return RedirectToAction("../Home/Dashboard", user1);
+                    return RedirectToAction("../Home/Dashboard", user);
                 }
                 else
                 {
@@ -38,16 +39,15 @@ namespace CloudWebMVC.Controllers
         {
             if (username.Trim().Equals("") || password.Trim().Equals(""))
                 return RedirectToAction("../Home/Index");
-            Models.Profile.leUser.Username = username;
-            Models.Profile.leUser.Password = password;
-            Models.Profile.leUser.Status = true;
 
+            var user = (CloudModel.User)Session["leUser"];
+            user.Username = username;
+            user.Password = password;
             
-            if ((Models.Profile.leUser = Models.Profile.userBL.SignIn(Models.Profile.leUser)) != null)
+            if ((user = Models.Profile.userBL.SignIn(user)) != null)
             {
-
-                return RedirectToAction("../Home/Dashboard");
-               
+                Session["leUser"] = user;
+                return RedirectToAction("../Home/Dashboard");               
             }
 
             return RedirectToAction("../Home/Index");
@@ -58,7 +58,8 @@ namespace CloudWebMVC.Controllers
         {
             CloudModel.User user1 = new CloudModel.User();
             user1.Username = user.Username;
-            Models.Profile.leUser.Status = false;
+            var user2 = (CloudModel.User)Session["leUser"];
+            user2.Status = false;            
             if (Models.Profile.userBL.SignOut(user1))
                 return RedirectToAction("../Home/Index");
             else return RedirectToAction("../Home/Dashboard");

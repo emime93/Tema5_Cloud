@@ -8,9 +8,20 @@ namespace CloudWebMVC.Controllers
 {
     public class HomeController : Controller
     {
+        public HomeController()
+        {         
+        }
         public ActionResult Index()
         {
-            CloudModel.User user1 = Models.Profile.leUser;
+            if (Session["leUser"] == null)
+            {
+                var user = new CloudModel.User();
+                user.Status = false;
+                user.Username = "";
+                user.Password = "";
+                Session["leUser"] = user;
+            }
+            CloudModel.User user1 = (CloudModel.User) Session["leUser"];
             if (user1.Status == true)
                 return RedirectToAction("../Home/Dashboard");
             return View();
@@ -18,7 +29,7 @@ namespace CloudWebMVC.Controllers
 
         public ActionResult Dashboard()
         {
-            CloudModel.User user1 = Models.Profile.leUser;
+            CloudModel.User user1 = (CloudModel.User)Session["leUser"];
             Models.User user = new Models.User();
             user.Username = user1.Username;
 
@@ -27,7 +38,7 @@ namespace CloudWebMVC.Controllers
 
             using (var context = new CloudModel.LeModelContainer())
             {
-                var leUser = context.Users.Find(Models.Profile.leUser.Id);
+                var leUser = context.Users.Find(user1.Id);
                 int i = 0;
                 user.FileNames = new string[leUser.Documents.Count];
                 foreach (var doc in context.Documents)
@@ -51,7 +62,7 @@ namespace CloudWebMVC.Controllers
         public ActionResult SignUp(Models.User user)
         {
             ViewBag.Message = "Login page";
-            CloudModel.User user1 = Models.Profile.leUser;
+            CloudModel.User user1 = (CloudModel.User)Session["leUser"];
             if (user1.Status == true)
                 return RedirectToAction("../Home/Dashboard");
             return View(user);

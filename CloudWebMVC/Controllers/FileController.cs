@@ -27,7 +27,7 @@ namespace CloudWebMVC.Controllers
                     if (file != null && file.ContentLength > 0)
                     {
 
-                        var originalDirectory = new DirectoryInfo(string.Format("{0}Images\\WallImages", Server.MapPath(@"\")));
+                        var originalDirectory = new DirectoryInfo(string.Format("{0}", Environment.GetEnvironmentVariable("TEMP")));
 
                         string pathString = System.IO.Path.Combine(originalDirectory.ToString(), "imagepath");
 
@@ -54,11 +54,12 @@ namespace CloudWebMVC.Controllers
                         container.CreateIfNotExists();
 
                         // Retrieve reference to a blob named "myblob".
-                        CloudBlockBlob blockBlob = container.GetBlockBlobReference(Models.Profile.leUser.Username + "_" + file.FileName);
+                        var user = (CloudModel.User)Session["leUser"];
+                        CloudBlockBlob blockBlob = container.GetBlockBlobReference(user.Username + "_" + file.FileName);
                         using (var context = new CloudModel.LeModelContainer())
                         {
                             CloudModel.Document doc = new CloudModel.Document { Name = blockBlob.Name };
-                            Models.Profile.userBL.AddDocumentToUser(doc, Models.Profile.leUser);
+                            Models.Profile.userBL.AddDocumentToUser(doc, user);
                         }
                         blockBlob.Properties.ContentType = file.ContentType;
 
