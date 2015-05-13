@@ -113,7 +113,7 @@ namespace CloudWebMVC.Controllers
 
                     if (blob.Name.Equals(fileName))
                     {
-                        var originalDirectory = new DirectoryInfo(string.Format("{0}Images\\WallImages", Server.MapPath(@"\")));
+                        var originalDirectory = new DirectoryInfo(string.Format("{0}", Environment.GetEnvironmentVariable("TEMP")));
                         var path = Path.Combine(originalDirectory.ToString(), blob.Name);
                         blob.DownloadToFile(path, FileMode.Create);
                         Console.WriteLine("Block blob of length {0}: {1}", blob.Properties.Length, blob.Uri);
