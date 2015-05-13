@@ -2,11 +2,13 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 05/12/2015 00:47:06
+-- Date Created: 05/13/2015 22:09:11
 -- Generated from EDMX file: c:\users\petricioiu\documents\visual studio 2013\Projects\Tema5_Cloud\CloudModel\LeModel.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
+GO
+USE [CloudUsersDB];
 GO
 IF SCHEMA_ID(N'dbo') IS NULL EXECUTE(N'CREATE SCHEMA [dbo]');
 GO
@@ -15,9 +17,6 @@ GO
 -- Dropping existing FOREIGN KEY constraints
 -- --------------------------------------------------
 
-IF OBJECT_ID(N'[dbo].[FK_DocumentDocument]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Documents] DROP CONSTRAINT [FK_DocumentDocument];
-GO
 IF OBJECT_ID(N'[dbo].[FK_UserDocument]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Documents] DROP CONSTRAINT [FK_UserDocument];
 GO
@@ -49,11 +48,8 @@ GO
 -- Creating table 'Documents'
 CREATE TABLE [dbo].[Documents] (
     [Id] int IDENTITY(1,1) NOT NULL,
-    [Type] nvarchar(max)  NOT NULL,
     [Name] nvarchar(max)  NOT NULL,
-    [DocumentId] int  NOT NULL,
-    [UserId] int  NOT NULL,
-    [AzureId] nvarchar(max)  NOT NULL
+    [UserId] int  NOT NULL
 );
 GO
 
@@ -76,21 +72,6 @@ GO
 -- --------------------------------------------------
 -- Creating all FOREIGN KEY constraints
 -- --------------------------------------------------
-
--- Creating foreign key on [DocumentId] in table 'Documents'
-ALTER TABLE [dbo].[Documents]
-ADD CONSTRAINT [FK_DocumentDocument]
-    FOREIGN KEY ([DocumentId])
-    REFERENCES [dbo].[Documents]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-GO
-
--- Creating non-clustered index for FOREIGN KEY 'FK_DocumentDocument'
-CREATE INDEX [IX_FK_DocumentDocument]
-ON [dbo].[Documents]
-    ([DocumentId]);
-GO
 
 -- Creating foreign key on [UserId] in table 'Documents'
 ALTER TABLE [dbo].[Documents]

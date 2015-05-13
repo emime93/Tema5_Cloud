@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CloudModel;
+using System.Data.Entity.Validation;
 
 namespace CloudBusinessLayer
 {
@@ -30,7 +31,7 @@ namespace CloudBusinessLayer
             }
         }
 
-        public bool SignIn(User user)
+        public User SignIn(User user)
         {
             using (var context = new CloudModel.LeModelContainer())
             {
@@ -43,11 +44,11 @@ namespace CloudBusinessLayer
                             user1.Password.Equals(user.Password))
                         {
                             user1.Status = true;
-                            return true;
+                            return user1;
                         }
                     }
                 }
-                return false;
+                return null;
             }
         }
 
@@ -72,8 +73,21 @@ namespace CloudBusinessLayer
 
         public bool AddDocumentToUser(Document doc, User user)
         {
-            user.Documents.Add(doc);
-            return true;
+            using (var context = new CloudModel.LeModelContainer())
+            {
+                var user1 = context.Users.Find(user.Id);
+                user1.Documents.Add(doc);
+                try
+                {
+                    context.SaveChanges();
+
+                    return true;
+                }
+                catch (DbEntityValidationException ex)
+                {
+                    return false;
+                }
+            }
         }
 
         public ICollection<Document> GetDocumentsForUser(User user)

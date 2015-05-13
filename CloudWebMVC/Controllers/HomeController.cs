@@ -10,16 +10,34 @@ namespace CloudWebMVC.Controllers
     {
         public ActionResult Index()
         {
+            CloudModel.User user1 = Models.Profile.leUser;
+            if (user1.Status == true)
+                return RedirectToAction("../Home/Dashboard");
             return View();
         }
 
-        public ActionResult Dashboard(Models.User user)
+        public ActionResult Dashboard()
         {
-            if (user.Username == null)
-                return RedirectToAction("../Home/Index");
-            ViewBag.Message = "Your application description page.";
+            CloudModel.User user1 = Models.Profile.leUser;
+            Models.User user = new Models.User();
+            user.Username = user1.Username;
 
-            return View(user);
+            if (user1.Status == false)
+                return RedirectToAction("../Home/Index");
+
+            using (var context = new CloudModel.LeModelContainer())
+            {
+                var leUser = context.Users.Find(Models.Profile.leUser.Id);
+                int i = 0;
+                user.FileNames = new string[leUser.Documents.Count];
+                foreach (var doc in context.Documents)
+                {
+                    if (doc.User.Equals(leUser))
+                        user.FileNames[i++] = doc.Name;
+                }
+                return View(user);
+            }
+
         }
 
         public ActionResult Contact()
@@ -33,6 +51,9 @@ namespace CloudWebMVC.Controllers
         public ActionResult SignUp(Models.User user)
         {
             ViewBag.Message = "Login page";
+            CloudModel.User user1 = Models.Profile.leUser;
+            if (user1.Status == true)
+                return RedirectToAction("../Home/Dashboard");
             return View(user);
         }
 

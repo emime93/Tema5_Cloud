@@ -22,22 +22,24 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
-                    <li>@Html.ActionLink("Dashboard", "Index", "Home")</li>
-                    <li role="presentation" class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
-                            Dropdown <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu" role="menu">
-                            <li><a href="#">Hello, @Html.DisplayTextFor(model => model.Username)</a></li>
-                                @using (Html.BeginForm("SignOut", "SignUp", FormMethod.Post))
+                    <li>@Html.ActionLink("Dashboard", "Dashboard", "Home")</li>
+                    @if(@ViewBag.Title == "Image uploader") {
+                        <li role="presentation" class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
+                                Profile <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="#">Hello, @Html.DisplayTextFor(model => model.Username)</a></li>
+                                <li>
+                                    <a href="#" onclick="$('#signOutForm').submit()">Sign out</a>
+                                </li>
+                                @using (Html.BeginForm("SignOut", "SignUp", FormMethod.Post, new { id = "signOutForm"}))
                                 {
-                                    @Html.TextBoxFor(model => model.Username, new { @style="display:none"})
-                                    <li>
-                                        <a href="#" onclick="$(this).closest('form').submit()" style="text-align:right;">Sign out</a>                                        
-                                    </li>
+                                    @Html.TextBoxFor(model => model.Username, new { @style = "display:none" })                                    
                                 }
-                        </ul>
-                    </li>
+                            </ul>
+                        </li>
+                    }
                 </ul>
             </div>
         </div>
@@ -54,5 +56,11 @@
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/dropzone")
     @RenderSection("scripts", required: false)
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            loadFiles();
+        });
+    </script>
 </body>
 </html>

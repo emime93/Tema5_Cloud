@@ -14,20 +14,10 @@ namespace CloudModel
     
     public partial class Document
     {
-        public Document()
-        {
-            this.Documents = new HashSet<Document>();
-        }
-    
         public int Id { get; set; }
-        public string Type { get; set; }
         public string Name { get; set; }
-        public int DocumentId { get; set; }
         public int UserId { get; set; }
-        public string AzureId { get; set; }
     
-        public virtual ICollection<Document> Documents { get; set; }
-        public virtual Document Document1 { get; set; }
         public virtual User User { get; set; }
     }
 }

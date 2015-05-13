@@ -8,10 +8,6 @@
   <EntityContainer Name="LeModelStoreContainer">
     <EntitySet Name="Users" EntityType="LeModel.Store.Users" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Documents" EntityType="LeModel.Store.Documents" store:Type="Tables" Schema="dbo" />
-    <AssociationSet Name="DocumentDocument" Association="LeModel.Store.DocumentDocument">
-      <End Role="Document" EntitySet="Documents" />
-      <End Role="Document1" EntitySet="Documents" />
-    </AssociationSet>
     <AssociationSet Name="UserDocument" Association="LeModel.Store.UserDocument">
       <End Role="User" EntitySet="Users" />
       <End Role="Document" EntitySet="Documents" />
@@ -31,24 +27,9 @@
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Type" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="DocumentId" Type="int" Nullable="false" />
     <Property Name="UserId" Type="int" Nullable="false" />
-    <Property Name="AzureId" Type="nvarchar(max)" Nullable="false" />
   </EntityType>
-  <Association Name="DocumentDocument">
-    <End Role="Document" Type="LeModel.Store.Documents" Multiplicity="1" />
-    <End Role="Document1" Type="LeModel.Store.Documents" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Document">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="Document1">
-        <PropertyRef Name="DocumentId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="UserDocument">
     <End Role="User" Type="LeModel.Store.Users" Multiplicity="1" />
     <End Role="Document" Type="LeModel.Store.Documents" Multiplicity="*" />
@@ -68,10 +49,6 @@
         <EntityContainer Name="LeModelContainer" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Users" EntityType="LeModel.User" />
           <EntitySet Name="Documents" EntityType="LeModel.Document" />
-          <AssociationSet Name="DocumentDocument" Association="LeModel.DocumentDocument">
-            <End Role="Document" EntitySet="Documents" />
-            <End Role="Document1" EntitySet="Documents" />
-          </AssociationSet>
           <AssociationSet Name="UserDocument" Association="LeModel.UserDocument">
             <End Role="User" EntitySet="Users" />
             <End Role="Document" EntitySet="Documents" />
@@ -84,35 +61,18 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Username" Type="String" Nullable="false" />
           <Property Name="Password" Type="String" Nullable="false" />
-          <NavigationProperty Name="Documents" Relationship="LeModel.UserDocument" FromRole="User" ToRole="Document" />
           <Property Name="Status" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Documents" Relationship="LeModel.UserDocument" FromRole="User" ToRole="Document" />
         </EntityType>
         <EntityType Name="Document">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Type" Type="String" Nullable="false" />
           <Property Name="Name" Type="String" Nullable="false" />
-          <NavigationProperty Name="Documents" Relationship="LeModel.DocumentDocument" FromRole="Document" ToRole="Document1" />
-          <NavigationProperty Name="Document1" Relationship="LeModel.DocumentDocument" FromRole="Document1" ToRole="Document" />
-          <Property Name="DocumentId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="User" Relationship="LeModel.UserDocument" FromRole="Document" ToRole="User" />
           <Property Name="UserId" Type="Int32" Nullable="false" />
-          <Property Name="AzureId" Type="String" Nullable="false" />
         </EntityType>
-        <Association Name="DocumentDocument">
-          <End Type="LeModel.Document" Role="Document" Multiplicity="1" />
-          <End Type="LeModel.Document" Role="Document1" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Document">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Document1">
-              <PropertyRef Name="DocumentId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="UserDocument">
           <End Type="LeModel.User" Role="User" Multiplicity="1" />
           <End Type="LeModel.Document" Role="Document" Multiplicity="*" />
@@ -145,11 +105,8 @@
       <EntityTypeMapping TypeName="IsTypeOf(LeModel.Document)">
         <MappingFragment StoreEntitySet="Documents">
           <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="Type" ColumnName="Type" />
           <ScalarProperty Name="Name" ColumnName="Name" />
-          <ScalarProperty Name="DocumentId" ColumnName="DocumentId" />
           <ScalarProperty Name="UserId" ColumnName="UserId" />
-          <ScalarProperty Name="AzureId" ColumnName="AzureId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

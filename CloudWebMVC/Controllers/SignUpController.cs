@@ -36,15 +36,18 @@ namespace CloudWebMVC.Controllers
         [HttpPost]
         public ActionResult SignIn(string username, string password)
         {
+            if (username.Trim().Equals("") || password.Trim().Equals(""))
+                return RedirectToAction("../Home/Index");
             Models.Profile.leUser.Username = username;
             Models.Profile.leUser.Password = password;
             Models.Profile.leUser.Status = true;
 
-            if (Models.Profile.userBL.SignIn(Models.Profile.leUser))
+            
+            if ((Models.Profile.leUser = Models.Profile.userBL.SignIn(Models.Profile.leUser)) != null)
             {
-                Models.User user = new Models.User();
-                user.Username = username;
-                return RedirectToAction("../Home/Dashboard", user);
+
+                return RedirectToAction("../Home/Dashboard");
+               
             }
 
             return RedirectToAction("../Home/Index");
@@ -55,6 +58,7 @@ namespace CloudWebMVC.Controllers
         {
             CloudModel.User user1 = new CloudModel.User();
             user1.Username = user.Username;
+            Models.Profile.leUser.Status = false;
             if (Models.Profile.userBL.SignOut(user1))
                 return RedirectToAction("../Home/Index");
             else return RedirectToAction("../Home/Dashboard");

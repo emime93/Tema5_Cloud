@@ -6,8 +6,7 @@
     <edmx:Diagrams>
       <Diagram DiagramId="77877bf35ea24746b62e5b40ea81c103" Name="Diagram1" >
         <EntityTypeShape EntityType="LeModel.User" Width="1.5" PointX="1.875" PointY="0.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="LeModel.Document" Width="1.5" PointX="4.875" PointY="0.5" IsExpanded="true" />
-        <AssociationConnector Association="LeModel.DocumentDocument" />
+        <EntityTypeShape EntityType="LeModel.Document" Width="1.5" PointX="4.5" PointY="0.875" IsExpanded="true" />
         <AssociationConnector Association="LeModel.UserDocument" />
       </Diagram>
     </edmx:Diagrams>

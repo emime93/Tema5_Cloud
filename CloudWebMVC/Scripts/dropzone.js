@@ -131,7 +131,7 @@
             params: {},
             clickable: true,
             ignoreHiddenFiles: true,
-            acceptedFiles: null,
+            acceptedFiles: "image/*",
             acceptedMimeTypes: null,
             autoProcessQueue: true,
             autoQueue: true,
@@ -375,11 +375,13 @@
                 return this.emit("error", file, "Upload canceled.");
             },
             canceledmultiple: noop,
-            complete: function (file) {
+            complete: function (file) {                
                 if (file._removeLink) {
                     file._removeLink.textContent = this.options.dictRemoveFile;
+                    location.reload();
                 }
                 if (file.previewElement) {
+                    location.reload();
                     return file.previewElement.classList.add("dz-complete");
                 }
             },

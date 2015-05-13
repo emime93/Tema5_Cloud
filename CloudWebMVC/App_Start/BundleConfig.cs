@@ -24,7 +24,7 @@ namespace CloudWebMVC
                       "~/Scripts/respond.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/dropzone").Include(
-                      "~/Scripts/dropzone.js"));
+                      "~/Scripts/dropzone.js", "~/Scripts/filesLoader.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",

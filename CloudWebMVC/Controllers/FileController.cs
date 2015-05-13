@@ -54,7 +54,12 @@ namespace CloudWebMVC.Controllers
                         container.CreateIfNotExists();
 
                         // Retrieve reference to a blob named "myblob".
-                        CloudBlockBlob blockBlob = container.GetBlockBlobReference(file.FileName);
+                        CloudBlockBlob blockBlob = container.GetBlockBlobReference(Models.Profile.leUser.Username + "_" + file.FileName);
+                        using (var context = new CloudModel.LeModelContainer())
+                        {
+                            CloudModel.Document doc = new CloudModel.Document { Name = blockBlob.Name };
+                            Models.Profile.userBL.AddDocumentToUser(doc, Models.Profile.leUser);
+                        }
                         blockBlob.Properties.ContentType = file.ContentType;
 
                         // Create or overwrite the "myblob" blob with contents from a local file.
@@ -85,7 +90,7 @@ namespace CloudWebMVC.Controllers
 
         }
 
-        public ActionResult GetFiles()
+        public ActionResult GetFiles(string fileName)
         {
             // Retrieve storage account from connection string.
             CloudStorageAccount storageAccount = CloudStorageAccount.Parse(
@@ -99,18 +104,21 @@ namespace CloudWebMVC.Controllers
 
             container.CreateIfNotExists();
 
+            List<String> imageUrls = new List<string>();
             foreach (IListBlobItem item in container.ListBlobs(null, false))
             {
                 if (item.GetType() == typeof(CloudBlockBlob))
                 {
                     CloudBlockBlob blob = (CloudBlockBlob)item;
-                    var originalDirectory = new DirectoryInfo(string.Format("{0}Images\\WallImages", Server.MapPath(@"\")));
-                    var path = Path.Combine(originalDirectory.ToString(), blob.Name);
-                    blob.DownloadToFile(path, FileMode.Create);
 
-                    
-                    Console.WriteLine("Block blob of length {0}: {1}", blob.Properties.Length, blob.Uri);
-                    return base.File(path, "image/jpeg");
+                    if (blob.Name.Equals(fileName))
+                    {
+                        var originalDirectory = new DirectoryInfo(string.Format("{0}Images\\WallImages", Server.MapPath(@"\")));
+                        var path = Path.Combine(originalDirectory.ToString(), blob.Name);
+                        blob.DownloadToFile(path, FileMode.Create);
+                        Console.WriteLine("Block blob of length {0}: {1}", blob.Properties.Length, blob.Uri);
+                        return base.File(path, "image/jpeg");
+                    }
                 }
                 else if (item.GetType() == typeof(CloudPageBlob))
                 {
@@ -126,7 +134,7 @@ namespace CloudWebMVC.Controllers
                     Console.WriteLine("Directory: {0}", directory.Uri);
                 }
             }
-            return null;
+            return Json(imageUrls, JsonRequestBehavior.AllowGet);
         }
     }
 }
